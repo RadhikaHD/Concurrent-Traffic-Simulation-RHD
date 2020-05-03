@@ -96,11 +96,19 @@ void TrafficLight::cycleThroughPhases()
 
             //toggles the current phase of the traffic light between red and green
             if (this->_currentPhase == red)
+            {
                 this->_currentPhase = green;
+                trafficlightmessages.send(green);
+                std::cout<<"light is green"<<std::endl;
+            }
             else
+            {
                 this->_currentPhase = red;
+                trafficlightmessages.send(red);
+                std::cout<<"light is red"<<std::endl;
+            }
             // sends an update method to the message queue using move semantics
-            trafficlightmessages.send(std::move(_currentPhase));
+            //trafficlightmessages.send(std::move(_currentPhase));
             start = std::chrono::high_resolution_clock::now();
         }
 

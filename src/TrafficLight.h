@@ -42,7 +42,7 @@ class TrafficLight : public TrafficObject
 public:
     // constructor / desctructor
     TrafficLight();
-    ~TrafficLight();
+    ~TrafficLight()=default;
     void waitForGreen();
     void simulate();
 
