@@ -25,7 +25,8 @@ template <typename T>
 void MessageQueue<T>::send(T &&msg)
 {
     // FP.4a : The method send should use the mechanisms std::lock_guard<std::mutex>
-    // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
+    // as well as _condition.notify_one() to add a new message to the queue and afterwards
+    //send a notification.
     // simulate some work
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
@@ -55,6 +56,12 @@ void TrafficLight::waitForGreen()
     // FP.5b : add the implementation of the method waitForGreen, in which an infinite while-loop
     // runs and repeatedly calls the receive function on the message queue.
     // Once it receives TrafficLightPhase::green, the method returns.
+    while (true)
+    {
+        auto color = trafficlightmessages.receive();
+        if (color == green)
+            return;
+    }
 }
 
 TrafficLight::TrafficLightPhase TrafficLight::getCurrentPhase()
@@ -93,7 +100,7 @@ void TrafficLight::cycleThroughPhases()
             else
                 this->_currentPhase = red;
             // sends an update method to the message queue using move semantics
-
+            trafficlightmessages.send(std::move(_currentPhase));
             start = std::chrono::high_resolution_clock::now();
         }
 
