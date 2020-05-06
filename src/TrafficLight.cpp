@@ -86,29 +86,30 @@ void TrafficLight::cycleThroughPhases()
     // value between 4 and 6 seconds.
     // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
     auto start = std::chrono::high_resolution_clock::now();
+    auto cycleduration = rand() % 2000 + 4000;
     while (true)
     {
         auto timenow = std::chrono::high_resolution_clock::now();
         auto timepassed = std::chrono::duration_cast<std::chrono::milliseconds>(timenow - start);
 
-        if (timepassed.count() >= rand() % 3000 + 4000)
+        if (timepassed.count() >= cycleduration)
         {
 
             //toggles the current phase of the traffic light between red and green
             if (this->_currentPhase == red)
             {
                 this->_currentPhase = green;
-                trafficlightmessages.send(green);
+                //trafficlightmessages.send(green);
                 std::cout<<"light is green"<<std::endl;
             }
             else
             {
                 this->_currentPhase = red;
-                trafficlightmessages.send(red);
+                //trafficlightmessages.send(red);
                 std::cout<<"light is red"<<std::endl;
             }
             // sends an update method to the message queue using move semantics
-            //trafficlightmessages.send(std::move(_currentPhase));
+            trafficlightmessages.send(std::move(_currentPhase));
             start = std::chrono::high_resolution_clock::now();
         }
 
