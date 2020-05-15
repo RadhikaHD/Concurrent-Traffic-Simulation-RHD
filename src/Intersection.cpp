@@ -90,7 +90,9 @@ void Intersection::addVehicleToQueue(std::shared_ptr<Vehicle> vehicle)
     // FP.6b : use the methods TrafficLight::getCurrentPhase
     //and TrafficLight::waitForGreen to block the execution until the traffic light turns green.
     //_trafficLight.getCurrentPhase();
+    if (_trafficLight.getCurrentPhase() != TrafficLight::TrafficLightPhase::green)
     _trafficLight.waitForGreen();
+    
     lck.unlock();
 }
 
